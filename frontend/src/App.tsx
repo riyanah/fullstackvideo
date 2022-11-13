@@ -1,38 +1,69 @@
-import * as React from "react"
+import { useState, useEffect } from "react";
 import {
   ChakraProvider,
+  Center,
+  Heading,
+  Button,
+  Input,
+  HStack,
+  Container,
+  SimpleGrid,
+  Image,
+  Spinner,
   Box,
   Text,
   Link,
   VStack,
-  Code,
   Grid,
   theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+} from "@chakra-ui/react";
+import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
+function App() {
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const [allVideos, setAllVideos] = useState<File[]>([]);
+  const [uploadSuccessful, setUploadSuccesful] = useState<boolean>(false);
+  const [showSpinner, setShowSpinner] = useState(false);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/videos")
+      .then((response) => response.json())
+      .then((data) => {
+        setAllVideos(data);
+      });
+  }, [uploadSuccessful]);
+  return (
+    <ChakraProvider theme={theme}>
+      <ColorModeSwitcher justifySelf="flex-end" />
+      <Center bg="black" color="white" padding={8}>
+        <VStack spacing={7}>
+          <Heading>Your Video Gallery</Heading>
+          <Text>Take a look at all your uploaded videos!!!</Text>
+          <HStack>
+            <input type="file"></input>
+            {/* Need to add onChange and isDisabled */}
+            <Button size="lg" colorScheme="red" isDisabled={true}>
+              Upload Video
+            </Button>
+          </HStack>
+          <Heading>Your Videos</Heading>
+          <SimpleGrid columns={3} spacing={8}>
+            {allVideos.length !== 0 &&
+              allVideos.map((video) => {
+                <video
+                  src={video["video_url"]}
+                  autoPlay
+                  controls
+                  loop
+                  preload="auto"
+                ></video>;
+              })}
+          </SimpleGrid>
         </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+      </Center>
+    </ChakraProvider>
+  );
+}
+
+export default App;
