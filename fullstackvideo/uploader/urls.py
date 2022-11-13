@@ -1,6 +1,10 @@
-from rest_framework.routers import SimpleRouter
-from .views import BoxViewset
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import BoxViewset, VideoViewset
 
-router = SimpleRouter()
-router.register('accounts', BoxViewset)
-urlpatterns = router.urls
+router = DefaultRouter()
+router.register('accounts', BoxViewset, basename="box")
+router.register('videos', VideoViewset, basename="video")
+urlpatterns = [
+    path('', include(router.urls)),
+]
