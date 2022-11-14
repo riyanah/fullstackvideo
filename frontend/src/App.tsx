@@ -58,7 +58,8 @@ function App() {
     setShowSpinner(true);
     if (selectedFile) {
       const formData = new FormData();
-      formData.append("file_attachment", selectedFile, selectedFile.name);
+      formData.append("title", "new upload");
+      formData.append("video_url", selectedFile, selectedFile.name);
 
       fetch("http://127.0.0.1:8000/videos/", {
         method: "POST",
