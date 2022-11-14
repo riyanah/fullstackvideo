@@ -1,4 +1,11 @@
-import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  MouseEvent,
+  FunctionComponent,
+  Fragment,
+} from "react";
 import {
   ChakraProvider,
   Center,
@@ -18,6 +25,10 @@ import {
   theme,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 type VideoProps = {
   created_at: string;
@@ -30,7 +41,7 @@ type VideoProps = {
 function App() {
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File>();
-
+  const [title, setTitle] = useState<string>();
   const [allVideos, setAllVideos] = useState<VideoProps[]>([]);
 
   const [uploadSuccessful, setUploadSuccesful] = useState<boolean>(false);
@@ -45,6 +56,9 @@ function App() {
       });
   }, [uploadSuccessful]);
 
+  const timeFromNow = (date: string) => {
+    return dayjs(date).fromNow();
+  };
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
@@ -53,12 +67,20 @@ function App() {
     setSelectedFile(e.target.files[0]);
   };
 
+  const onTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
   const onFileUpload = (e: MouseEvent<HTMLButtonElement>) => {
     //console.log("Button Clicked");
     setShowSpinner(true);
     if (selectedFile) {
       const formData = new FormData();
-      formData.append("title", "new upload");
+      if (title) {
+        formData.append("title", title);
+      } else {
+        formData.append("title", "new upload");
+      }
+
       formData.append("video_url", selectedFile, selectedFile.name);
 
       fetch("http://127.0.0.1:8000/videos/", {
@@ -78,8 +100,15 @@ function App() {
       <ColorModeSwitcher justifySelf="flex-end" />
       <Center bg="black" color="white" padding={8}>
         <VStack spacing={7}>
-          <Heading>Your Video Gallery</Heading>
-          <Text>Take a look at all your uploaded videos!!!</Text>
+          <Heading>Townhall Gallery</Heading>
+          <Text>
+            Thanks for stumbling across this site. Leave a mark on this website!
+          </Text>
+
+          <HStack>
+            <Text>Title</Text>
+            <Input placeholder="Basic usage" onChange={onTitleChange} />
+          </HStack>
           <HStack>
             <input type="file" onChange={onInputChange}></input>
 
@@ -97,13 +126,15 @@ function App() {
               </Center>
             )}
           </HStack>
+
           <Heading>Your Videos</Heading>
           <SimpleGrid columns={3} spacing={8}>
             {allVideos?.map((value) => {
               return (
                 <div>
-                  <div>{value.title}</div>
-                  <div>{value.created_at}</div>
+                  <Text>{value.title}</Text>
+                  <Text>{timeFromNow(value.created_at)}</Text>
+
                   <video
                     src={value["video_url"]}
                     //  autoPlay
