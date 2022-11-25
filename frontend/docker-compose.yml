@@ -13,3 +13,5 @@ services:
     stdin_open: true
     command: >
       sh -c "npm start"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
