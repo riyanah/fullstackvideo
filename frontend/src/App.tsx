@@ -83,7 +83,7 @@ function App() {
 
       formData.append("video_url", selectedFile, selectedFile.name);
 
-      fetch("http://127.0.0.1:8000/videos/", {
+      fetch("http://localhost:8000/videos/", {
         method: "POST",
         body: formData,
       })
@@ -107,8 +107,9 @@ function App() {
 
           <HStack>
             <Text>Title</Text>
-            <Input placeholder="Basic usage" onChange={onTitleChange} />
+            <Input placeholder="Enter your title" onChange={onTitleChange} />
           </HStack>
+
           <HStack>
             <input type="file" onChange={onInputChange}></input>
 
