@@ -113,7 +113,7 @@ I was trying to learn more about scalable backend development, specifically abou
 <!-- GETTING STARTED -->
 ## Getting Started
 
-If you would like to reuse this project, you can add your own AWS credentials to the ```SETTINGS.PY``` file, and create a S3 bucket on AWS.
+If you would like to reuse this project, you can add your own AWS credentials to the ```SETTINGS.PY``` file, hopefully with an .env file, and create a S3 bucket on AWS.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
