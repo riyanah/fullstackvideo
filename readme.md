@@ -42,7 +42,7 @@
   </p>
 </div>
 
-
+![image](https://user-images.githubusercontent.com/25188689/203913993-b4662321-7225-4de6-93b0-9f098e06ce43.png)
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -54,12 +54,12 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li>
       <a href="#getting-started">Getting Started</a>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+   
   </ol>
 </details>
 
@@ -68,15 +68,19 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![image](https://user-images.githubusercontent.com/25188689/203913993-b4662321-7225-4de6-93b0-9f098e06ce43.png)
 
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+I was trying to learn more about scalable backend development, specifically about how to make a video application since I love watching youtube videos, and I came across a youtube video by a youtuber named [Code with Irtiza](https://www.youtube.com/@irtizahafiz) titled [Let’s Build a Full Stack Video App with FastAPI, PostgreSQL, AWS S3, React JS & Chakra UI](https://youtu.be/ex-4a08wwHE)
+; I wanted to see if I could recreate the video application on my own using my Django Rest Framework knowledge to recreate it, instead of FastAPI like how they did in the video. I also wanted to learn more about Typescript on the frontend. I'm aiming to use this project as a starting point for diving deeper into backend development and systems design.
+
+
+* I used django-storages to use AWS S3 as the storage provider
+* Created a Video, and Box model in the django ORM to store mp4 videos, and generic files respectively
+* Used ModelSerializers to serialize the data in our models, an ModelViewsets to provide CRUD operations
+* Used Docker to containerize the frontend and the backend
+* Used Typescript on the frontend
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -94,12 +98,22 @@ Here's why:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+<!-- ROADMAP -->
+## Roadmap
+- [ ] Implement a robust social featureset such as users, users' liked and shared videos, authentication
+- [ ] Use Redis to store the urls of the most popular videos, so that they get served to the users extremely quickly
+- [ ] Use ElasticSearch and make a 'video search feature' 
+- [ ] Transcode Video (ffmpeg?) , then publish the message to Kafka
+- [ ] Use Kafka as a central bus for moving data
+- [ ] Load Balancer
+- [ ] Switch from SQLLite to a different database, to store our metadata
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 If you would like to reuse this project, you can add your own AWS credentials to the ```SETTINGS.PY``` file, and create a S3 bucket on AWS.
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -121,39 +135,12 @@ docker-compose up --build
 
 
 
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
