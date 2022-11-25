@@ -107,6 +107,7 @@ I was trying to learn more about scalable backend development, specifically abou
 - [ ] Use Kafka as a central bus for moving data
 - [ ] Load Balancer
 - [ ] Switch from SQLLite to a different database, to store our metadata
+- [ ] Follow openAPI specifications
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
