@@ -1,29 +1,18 @@
-import React, {
-  useState,
-  useEffect,
-  ChangeEvent,
-  MouseEvent,
-  FunctionComponent,
-  Fragment,
-} from "react";
+import React, { useState, useEffect, ChangeEvent, MouseEvent } from "react";
+
 import {
-  ChakraProvider,
   Center,
   Heading,
   Button,
   Input,
   HStack,
-  Container,
   SimpleGrid,
-  Image,
   Spinner,
   Box,
   Text,
-  Link,
   VStack,
-  Grid,
-  theme,
 } from "@chakra-ui/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/card";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -96,60 +85,69 @@ function App() {
     }
   };
   return (
-    <ChakraProvider theme={theme}>
-      <ColorModeSwitcher justifySelf="flex-end" />
-      <Center bg="black" color="white" padding={8}>
-        <VStack spacing={7}>
-          <Heading>Townhall Gallery</Heading>
-          <Text>
-            Thanks for stumbling across this site. Leave a mark on this website!
-          </Text>
+    <Center color="white" padding={8}>
+      <VStack spacing={7}>
+        <Heading>
+          Townhall Gallery <ColorModeSwitcher />
+        </Heading>
+        <Text>
+          Thanks for stumbling across this site. Leave a mark on this website!
+        </Text>
 
-          <HStack>
-            <Text>Title</Text>
-            <Input placeholder="Enter your title" onChange={onTitleChange} />
-          </HStack>
+        <HStack>
+          <Text>Title</Text>
+          <Input placeholder="Enter your title" onChange={onTitleChange} />
+        </HStack>
 
-          <HStack>
-            <input type="file" onChange={onInputChange}></input>
+        <HStack>
+          <input type="file" onChange={onInputChange}></input>
 
-            <Button
-              size="lg"
-              colorScheme="red"
-              isDisabled={!isSelected}
-              onClick={onFileUpload}
-            >
-              Upload Video
-            </Button>
-            {showSpinner && (
-              <Center>
-                <Spinner size="xl"></Spinner>
-              </Center>
-            )}
-          </HStack>
+          <Button
+            size="lg"
+            colorScheme="red"
+            isDisabled={!isSelected}
+            onClick={onFileUpload}
+          >
+            Upload Video
+          </Button>
+          {showSpinner && (
+            <Center>
+              <Spinner size="xl"></Spinner>
+            </Center>
+          )}
+        </HStack>
 
-          <Heading>Your Videos</Heading>
-          <SimpleGrid columns={3} spacing={8}>
-            {allVideos?.map((value) => {
-              return (
-                <div>
-                  <Text>{value.title}</Text>
-                  <Text>{timeFromNow(value.created_at)}</Text>
-
-                  <video
-                    src={value["video_url"]}
-                    //  autoPlay
+        <Heading>Your Curated Videos</Heading>
+        <SimpleGrid columns={3} spacing={8}>
+          {allVideos?.map((value) => {
+            return (
+              <Card>
+                <CardHeader>
+                  <Text as="b" fontSize="xl">
+                    {value.title}
+                  </Text>
+                </CardHeader>
+                <CardBody>
+                  <Box
+                    as="video"
                     controls
-                    loop
-                    preload="auto"
-                  ></video>
-                </div>
-              );
-            })}
-          </SimpleGrid>
-        </VStack>
-      </Center>
-    </ChakraProvider>
+                    autoPlay
+                    src={value["video_url"]}
+                    objectFit="contain"
+                    sx={{
+                      aspectRatio: "16/9",
+                    }}
+                  />
+                </CardBody>
+                <CardFooter>
+                  <Text fontSize="sm">{timeFromNow(value.created_at)}</Text>
+                </CardFooter>
+              </Card>
+            );
+          })}
+        </SimpleGrid>
+      </VStack>
+    </Center>
   );
 }
 
