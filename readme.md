@@ -71,8 +71,8 @@
 
 
 
-I was trying to learn more about scalable backend development, specifically about how to make a video application since I love watching youtube videos, and I came across a youtube video by a youtuber named [Code with Irtiza](https://www.youtube.com/@irtizahafiz) titled [Let’s Build a Full Stack Video App with FastAPI, PostgreSQL, AWS S3, React JS & Chakra UI](https://youtu.be/ex-4a08wwHE)
-; I wanted to see if I could recreate the video application on my own using my Django Rest Framework knowledge to recreate it, instead of FastAPI like how they did in the video. I also wanted to learn more about Typescript on the frontend. I'm aiming to use this project as a starting point for diving deeper into backend development and systems design.
+I was trying to learn more about scalable backend development, specifically about how to make a video application since I love watching youtube videos, 
+and I wanted to see if I could recreate the video application on my own using my Django Rest Framework knowledge to recreate it, instead of FastAPI like how they did in the video. I also wanted to learn more about Typescript on the frontend. I'm aiming to use this project as a starting point for diving deeper into backend development and systems design.
 
 
 * I used django-storages to use AWS S3 as the storage provider
