@@ -22,6 +22,13 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
+
+
+
+## Architecture Diagram with AWS services
+
+![image](https://github-production-user-asset-6210df.s3.amazonaws.com/25188689/248453162-8ad66abb-b99c-4f71-b1e2-77648863556f.png)
+
 [![React][React.js]][React-url]
 ![ts](https://flat.badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555)
 ![Chakra](https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white)
@@ -41,7 +48,7 @@
   
   </p>
 </div>
-![finalaws3 drawio](https://github.com/riyanah/fullstackvideo/assets/25188689/8ad66abb-b99c-4f71-b1e2-77648863556f.png)
+
 
 ![image](https://user-images.githubusercontent.com/25188689/203913993-b4662321-7225-4de6-93b0-9f098e06ce43.png)
 
