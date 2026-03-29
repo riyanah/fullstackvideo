@@ -78,21 +78,23 @@ with Diagram(
 
     db = Postgresql("SQLite\n(shared volume)")
 
+    WHITE = "#f0f6fc"
+
     # User flow
-    browser >> Edge(label="Upload video", color="#3fb950") >> frontend
-    frontend >> Edge(label="POST /videos/", color="#3fb950") >> api
+    browser >> Edge(label="Upload video", color="#3fb950", fontcolor=WHITE) >> frontend
+    frontend >> Edge(label="POST /videos/", color="#3fb950", fontcolor=WHITE) >> api
 
     # API stores file and publishes event
-    api >> Edge(label="Store .mp4", color="#d29922") >> s3
-    api >> Edge(label="Save metadata", color="#79c0ff") >> db
-    api >> Edge(label="Publish event", color="#58a6ff", style="bold") >> broker
+    api >> Edge(label="Store .mp4", color="#d29922", fontcolor=WHITE) >> s3
+    api >> Edge(label="Save metadata", color="#79c0ff", fontcolor=WHITE) >> db
+    api >> Edge(label="Publish event", color="#58a6ff", style="bold", fontcolor=WHITE) >> broker
 
     # Worker consumes and processes
-    broker >> Edge(label="Consume event", color="#58a6ff", style="bold") >> worker
-    worker >> Edge(label="Download .mp4", color="#d29922", style="dashed") >> s3
-    worker >> Edge(label="Upload thumbnail", color="#d29922") >> s3
-    worker >> Edge(label="Update status\n+ metadata", color="#79c0ff") >> db
+    broker >> Edge(label="Consume event", color="#58a6ff", style="bold", fontcolor=WHITE) >> worker
+    worker >> Edge(label="Download .mp4", color="#d29922", style="dashed", fontcolor=WHITE) >> s3
+    worker >> Edge(label="Upload thumbnail", color="#d29922", fontcolor=WHITE) >> s3
+    worker >> Edge(label="Update status\n+ metadata", color="#79c0ff", fontcolor=WHITE) >> db
 
     # Frontend polls for updates
-    frontend >> Edge(label="GET /videos/\n(poll)", color="#a5d6ff", style="dashed") >> api
-    api >> Edge(label="Read", color="#a5d6ff", style="dashed") >> db
+    frontend >> Edge(label="GET /videos/\n(poll)", color="#a5d6ff", style="dashed", fontcolor=WHITE) >> api
+    api >> Edge(label="Read", color="#a5d6ff", style="dashed", fontcolor=WHITE) >> db
