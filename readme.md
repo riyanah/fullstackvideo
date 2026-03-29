@@ -25,32 +25,44 @@
 
 
 
-## Architecture Diagram with AWS services
+## Architecture
 
-![image](https://github-production-user-asset-6210df.s3.amazonaws.com/25188689/248453162-8ad66abb-b99c-4f71-b1e2-77648863556f.png)
+![Architecture Diagram](docs/architecture.png)
 
 [![React][React.js]][React-url]
 ![ts](https://flat.badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555)
 ![Chakra](https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white)
 ![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray)
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![FFmpeg](https://img.shields.io/badge/FFmpeg-007808?style=for-the-badge&logo=ffmpeg&logoColor=white)
 
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
 
-  <h3 align="center">Full Stack Video</h3>
+  <h3 align="center">Fullstack Video</h3>
 
   <p align="center">
-    A full stack video service that lets users upload and consume their own custom video content
+    An event-driven video processing platform powered by Apache Kafka
     <br />
   
   </p>
 </div>
 
+### Event-Driven Processing Pipeline
 
-![image](https://user-images.githubusercontent.com/25188689/203913993-b4662321-7225-4de6-93b0-9f098e06ce43.png)
+When a video is uploaded, the backend publishes a `video_uploaded` event to Kafka. A background worker consumes the event, generates a thumbnail, extracts metadata (duration, resolution), and updates the database — all asynchronously.
+
+**Video queued for processing:**
+
+![Video queued for processing](docs/screenshots/video-queued.png)
+
+**Processing complete — thumbnail, duration, and resolution extracted:**
+
+![Processing complete](docs/screenshots/video-completed.png)
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -83,11 +95,12 @@ I was trying to learn more about scalable backend development, specifically abou
 and I wanted to see if I could recreate the video application on my own using my Django Rest Framework knowledge to recreate it, instead of FastAPI like how they did in the video. I also wanted to learn more about Typescript on the frontend. I'm aiming to use this project as a starting point for diving deeper into backend development and systems design.
 
 
-* I used django-storages to use AWS S3 as the storage provider
-* Created a Video, and Box model in the django ORM to store mp4 videos, and generic files respectively
-* Used ModelSerializers to serialize the data in our models, an ModelViewsets to provide CRUD operations
-* Used Docker to containerize the frontend and the backend
-* Used Typescript on the frontend
+* **Event-driven processing** — uploads publish a `video_uploaded` event to Apache Kafka; a background worker consumes events asynchronously
+* **Thumbnail generation & metadata extraction** — worker uses FFmpeg to generate thumbnails and extract duration/resolution
+* **Django REST Framework** API with ModelViewSets and ModelSerializers
+* **django-storages** with AWS S3 for video and thumbnail storage
+* **Docker Compose** orchestrates Zookeeper, Kafka, Django, and the worker service
+* **React + TypeScript** frontend with Chakra UI, real-time polling for processing status
 
 
 
@@ -108,13 +121,14 @@ and I wanted to see if I could recreate the video application on my own using my
 
 <!-- ROADMAP -->
 ## Roadmap
+- [x] Transcode Video (ffmpeg) , then publish the message to Kafka
+- [x] Use Kafka as a central bus for moving data
 - [ ] Implement a robust social featureset such as users, users' liked and shared videos, authentication
 - [ ] Use Redis to store the urls of the most popular videos, so that they get served to the users extremely quickly
 - [ ] Use ElasticSearch and make a 'video search feature' 
-- [ ] Transcode Video (ffmpeg?) , then publish the message to Kafka
-- [ ] Use Kafka as a central bus for moving data
+- [ ] Add Flink for stream analytics
 - [ ] Load Balancer
-- [ ] Switch from SQLLite to a different database, to store our metadata
+- [ ] Switch from SQLite to a different database, to store our metadata
 - [ ] Follow openAPI specifications
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -122,24 +136,37 @@ and I wanted to see if I could recreate the video application on my own using my
 <!-- GETTING STARTED -->
 ## Getting Started
 
-If you would like to reuse this project, you can add your own AWS credentials to the ```SETTINGS.PY``` file, hopefully with an .env file, and create a S3 bucket on AWS.
+1. Create an AWS S3 bucket and add your credentials to `fullstackvideo/.env`:
+   ```
+   SECRET_KEY=your-django-secret-key
+   AWS_ACCESS_KEY_ID=your-key
+   AWS_SECRET_ACCESS_KEY=your-secret
+   AWS_STORAGE_BUCKET_NAME=your-bucket
+   AWS_S3_SIGNATURE_VERSION=s3v4
+   AWS_S3_REGION_NAME=us-east-1
+   ```
+2. Make sure Docker and Docker Compose are installed.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Using docker and docker-compose, we can easily run the project on different environments.
+The backend stack (Django API + Kafka + Zookeeper + worker) and frontend run as separate Compose stacks.
 
-To run the backend, cd into the fullstackvideo directory and do
+**Start the backend** (API, Kafka, Zookeeper, processing worker):
 
-```
+```bash
+cd fullstackvideo
 docker-compose up --build
 ```
 
-To run the frontend, cd into the frontend directory and do
+**Start the frontend** (React dev server):
 
-```
+```bash
+cd frontend
 docker-compose up --build
 ```
+
+Then open [http://localhost:3000](http://localhost:3000) to use the app. The API runs at [http://localhost:8000](http://localhost:8000).
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -152,6 +179,14 @@ docker-compose up --build
 
 
 
+
+---
+
+<details>
+  <summary>Architecture Diagram (old)</summary>
+
+  ![Old architecture](https://github-production-user-asset-6210df.s3.amazonaws.com/25188689/248453162-8ad66abb-b99c-4f71-b1e2-77648863556f.png)
+</details>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
