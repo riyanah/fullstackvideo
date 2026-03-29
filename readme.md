@@ -54,7 +54,7 @@
 
 ### Event-Driven Processing Pipeline
 
-When a video is uploaded, the backend publishes a `video_uploaded` event to Kafka. A background worker consumes the event, generates a thumbnail, extracts metadata (duration, resolution), and updates the database — all asynchronously.
+When a video is uploaded, the backend publishes a `video_uploaded` event to Kafka. A background worker consumes the event, generates a thumbnail, extracts metadata (duration, resolution), and updates the database, all asynchronously.
 
 **Video queued for processing:**
 
@@ -91,30 +91,22 @@ When a video is uploaded, the backend publishes a `video_uploaded` event to Kafk
 
 
 
-I was trying to learn more about scalable backend development, specifically about how to make a video application since I love watching youtube videos, 
-and I wanted to see if I could recreate the video application on my own using my Django Rest Framework knowledge to recreate it, instead of FastAPI like how they did in the video. I also wanted to learn more about Typescript on the frontend. I'm aiming to use this project as a starting point for diving deeper into backend development and systems design.
+I watch a lot of YouTube and I've always been curious about what happens behind the scenes when you upload a video. How does the thumbnail show up? How does it know the resolution and duration? Why doesn't the upload just hang while all that work happens?
 
+So I built this to find out. The backend is Django REST Framework (I wanted to stick with what I know rather than jump to FastAPI), and the frontend is React + TypeScript with Chakra UI. Videos get stored in S3 via django-storages.
+
+The part I'm most proud of is the Kafka integration. When you upload a video, the API stores the file and then publishes a `video_uploaded` event to Kafka; It doesn't sit there generating thumbnails or extracting metadata. A separate worker process picks up that event, downloads the video from S3, runs ffmpeg/ffprobe to generate a thumbnail and pull out duration + resolution, then writes everything back to the database. The frontend polls every few seconds so you can actually watch it go from "Queued" to "Completed."
+
+I want to keep building on this, e.g. by adding Flink for stream processing, transcoding pipelines, Elasticsearch for search, Redis for caching popular videos. The nice thing about using Kafka is that I can just add more consumers to the same topic without changing the upload flow at all.
 
 * **Event-driven processing** — uploads publish a `video_uploaded` event to Apache Kafka; a background worker consumes events asynchronously
-* **Thumbnail generation & metadata extraction** — worker uses FFmpeg to generate thumbnails and extract duration/resolution
+* **Thumbnail generation & metadata extraction** — worker uses FFmpeg and ffprobe to generate thumbnails and extract duration/resolution
 * **Django REST Framework** API with ModelViewSets and ModelSerializers
-* **django-storages** with AWS S3 for video and thumbnail storage
-* **Docker Compose** orchestrates Zookeeper, Kafka, Django, and the worker service
-* **React + TypeScript** frontend with Chakra UI, real-time polling for processing status
+* **AWS S3** for video and thumbnail storage via django-storages
+* **Docker Compose** orchestrates Zookeeper, Kafka, Django, and the worker as separate services
+* **React + TypeScript** frontend with Chakra UI and real-time status polling
 
 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-[![React][React.js]][React-url]
-![ts](https://flat.badgen.net/badge/-/TypeScript?icon=typescript&label&labelColor=blue&color=555555)
-![Chakra](https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white)
-![DjangoREST](https://img.shields.io/badge/DJANGO-REST-ff1709?style=for-the-badge&logo=django&logoColor=white&color=ff1709&labelColor=gray)
-![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
